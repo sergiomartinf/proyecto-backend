@@ -1,12 +1,12 @@
 const { writeFile } = require("fs");
 const express = require("express");
 const { json } = require("body-parser"); 
-let colores = require("./datos/Colores.json");//hace automaticamente el PARSE
+let colores = require("./Datos/Colores.json");//hace automaticamente el PARSE
 let proximoId = colores.length > 0 ? colores[colores.length - 1].id + 1 : 1;
 
 function guardarColores(){
 	return new Promise((ok,ko) => {
-		writeFile("./datos/Colores.json",JSON.stringify(colores), error => {
+		writeFile("./Datos/Colores.json",JSON.stringify(colores), error => {
 			!error ? ok() : ko();
 		});
 	});
