@@ -1,12 +1,12 @@
 const { writeFile } = require("fs");
 const express = require("express");
 const { json } = require("body-parser"); 
-let colores = require("./datos/colores.json");//hace automaticamente el PARSE
+let colores = require("./datos/Colores.json");//hace automaticamente el PARSE
 let proximoId = colores.length > 0 ? colores[colores.length - 1].id + 1 : 1;
 
 function guardarColores(){
 	return new Promise((ok,ko) => {
-		writeFile("./datos/colores.json",JSON.stringify(colores), error => {
+		writeFile("./datos/Colores.json",JSON.stringify(colores), error => {
 			!error ? ok() : ko();
 		});
 	});
@@ -16,13 +16,13 @@ const servidor = express();
 
 servidor.use(json());
 
-servidor.use(express.static("./lista_colores"));
+servidor.use(express.static("./Lista_colores"));
 
-servidor.get("/colores", (peticion,respuesta) => {
+servidor.get("/Colores", (peticion,respuesta) => {
 	respuesta.json(colores);
 });
 
-servidor.post("/nuevo", (peticion,respuesta) => {
+servidor.post("/Nuevo", (peticion,respuesta) => {
 	//previa validación
 	peticion.body.id = proximoId;
 	proximoId++;
@@ -42,10 +42,11 @@ servidor.post("/nuevo", (peticion,respuesta) => {
 
 
 servidor.delete("/borrar/:id",(peticion,respuesta) => {
+    colores = colores.filter(color => color.id != peticion.params.id);
 
-    console.log(peticion.params.id);
-
-	respuesta.json({ error : "bla bla bla" });
+    guardarColores()
+    .then(() => respuesta.json({ resultado : "ok" }))
+    .catch(() => respuesta.json({ resultado : "ko" }));
 });
 
 
