@@ -19,7 +19,7 @@ servidor.use(json());
 servidor.use(express.static("./Lista_colores"));
 
 servidor.get("/Colores", (peticion,respuesta) => {
-	respuesta.json(colores);
+	respuesta.json(colores); 
 });
 
 servidor.post("/Nuevo", (peticion,respuesta) => {
